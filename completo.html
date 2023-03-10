@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.min.js"></script>
+	  <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@0.7.0"></script>
+    <link rel="stylesheet" href="style.css">
+	<title>Tabela de Participação</title>
+  <style>
+    #chart-container {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 500px;
+    }
+  
+    #myChart {
+      width: 80%;
+      height: 80%;
+    }
+    </style>
+</head>
+
+
+<body>
+    <header>
+	<form>
+        <div class="header">
+        <div class="form-control">
+		<label for="first-name"></label>
+		<input type="text" id="first-name" placeholder="Primeiro Nome">
+
+		<label for="last-name"></label>
+		<input type="text" id="last-name" placeholder="Sobrenome">
+
+		<label for="participation"></label>
+		<input type="number" id="participation" placeholder="Participação">
+
+		<button type="button" onclick="addParticipant()">Adicionar</button>
+        </div>
+	</form>
+</header>
+  
+    <div id="chart-container">
+        <canvas id="myChart"></canvas>
+    </div>
+	<script>
+		function addParticipant() {
+			var firstName = document.getElementById("first-name").value;
+			var lastName = document.getElementById("last-name").value;
+			var participation = document.getElementById("participation").value;
+
+			var table = document.getElementById("participationTable").getElementsByTagName('tbody')[0];
+			var row = table.insertRow();
+			var firstNameCell = row.insertCell(0);
+			var lastNameCell = row.insertCell(1);
+			var participationCell = row.insertCell(2);
+
+			firstNameCell.innerHTML = firstName;
+			lastNameCell.innerHTML = lastName;
+			participationCell.innerHTML = participation + "%";
+
+  var tableRows = document.getElementById("participationTable").getElementsByTagName("tbody")[0].getElementsByTagName("tr");
+  var labels = [];
+  var data = [];
+  for (var i = 0; i < tableRows.length; i++) {
+    labels.push(tableRows[i].getElementsByTagName("td")[0].innerHTML + " " + tableRows[i].getElementsByTagName("td")[1].innerHTML);
+    data.push(parseInt(tableRows[i].getElementsByTagName("td")[2].innerHTML));
+  }
+  
+  var ctx = document.getElementById("myChart").getContext('2d');
+  var myChart = new Chart(ctx, {
+    type: 'doughnut',
+    data: {
+      labels: labels,
+      datasets: [{
+        label: 'Participação',
+        data: data,
+        backgroundColor: [
+          'rgba(255, 99, 132, 0.2)',
+          'rgba(54, 162, 235, 0.2)',
+          'rgba(255, 206, 86, 0.2)',
+          'rgba(75, 192, 192, 0.2)',
+          'rgba(153, 102, 255, 0.2)',
+          'rgba(255, 159, 64, 0.2)',
+        ]
+      }]
+    },
+    options: {
+  plugins: {
+    legend:{
+      labels: {
+      }
+    }
+  }
+}
+  });
+    document.getElementById("first-name").value = "";
+    document.getElementById("last-name").value = "";
+    document.getElementById("participation").value = "";
+}
+	
+        
+	</script>
+    
+    <table id="participationTable">
+		<thead>
+			<tr>
+				<th>Nome</th>
+				<th>Sobrenome</th>
+				<th>Participação</th>
+			</tr>
+			
+		</thead>
+		<tbody>
+		</tbody>
+	</table>
+</body>
+<footer>
+   <img src="logo-cotabox.png" alt="">
+  </footer>
+</html>
